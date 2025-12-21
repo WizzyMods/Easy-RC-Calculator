@@ -1,0 +1,276 @@
+:root {
+  /* Common Transitions */
+  --theme-transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+}
+
+/* Base Modes */
+[data-mode='dark'] {
+  --bg-dark: #0f172a;
+  --bg-main: #020617;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+[data-mode='light'] {
+  --bg-dark: #f8fafc;
+  --bg-main: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --glass-bg: rgba(15, 23, 42, 0.05);
+  --glass-border: rgba(15, 23, 42, 0.1);
+  --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Theme Colors */
+[data-theme='default'] {
+  --primary: #3b82f6;
+  --secondary: #60a5fa;
+  --primary-rgb: 59, 130, 246;
+}
+
+[data-theme='crimson'] {
+  --primary: #ef4444;
+  --secondary: #f87171;
+  --primary-rgb: 239, 68, 68;
+}
+
+[data-theme='emerald'] {
+  --primary: #10b981;
+  --secondary: #34d399;
+  --primary-rgb: 16, 185, 129;
+}
+
+[data-theme='sunset'] {
+  --primary: #f59e0b;
+  --secondary: #fbbf24;
+  --primary-rgb: 245, 158, 11;
+}
+
+/* Theme Blur Overlay */
+.theme-blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-blur-active .theme-blur-overlay {
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+/* Hide Spinners for Number Inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.hover-glow:hover {
+  border-color: var(--primary);
+  background: rgba(var(--primary-rgb, 59, 130, 246), 0.1) !important;
+  box-shadow: 0 0 15px rgba(var(--primary-rgb, 59, 130, 246), 0.2);
+}
+
+/* Update language-btn to use the same logic if needed, or just keep it */
+.language-btn:hover {
+  border-color: var(--primary);
+  background: rgba(var(--primary-rgb, 59, 130, 246), 0.1);
+  box-shadow: 0 0 15px rgba(var(--primary-rgb, 59, 130, 246), 0.2);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: var(--theme-transition);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Specific transitions to prevent layout jitter */
+.glass-card,
+.glass-nav,
+.gradient-text,
+button,
+input {
+  transition: var(--theme-transition);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.glass-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.nav-search-mobile {
+  display: none;
+}
+
+.container {
+  max-width: 1440px;
+  /* Increased from 1200px */
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .gradient-text {
+    /* Font size should inherit or be slightly smaller, but not 1.1rem */
+    font-size: inherit !important;
+  }
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.language-btn:hover {
+  border-color: var(--primary);
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.language-btn span {
+  background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Dashboard & Redesign Styles */
+.calculator-dashboard {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .calculator-dashboard header h2 {
+    font-size: 2rem !important;
+  }
+}
+
+/* Secondary result cards hover */
+.secondary-result:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--primary)44 !important;
+}
+
+/* Mobile adjustments for the two-column layout */
+@media (max-width: 850px) {
+  .calculator-dashboard header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .calculator-dashboard .glass-card {
+    padding: 1.5rem !important;
+  }
+}
+
+/* Mobile specific fixes */
+@media (max-width: 600px) {
+  .glass-nav .container {
+    height: auto !important;
+    padding: 0.5rem 0.75rem !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    gap: 0.25rem !important;
+  }
+
+  .glass-nav {
+    height: auto !important;
+  }
+
+  header h2 {
+    font-size: 2rem !important;
+  }
+
+  header p {
+    font-size: 1.1rem !important;
+  }
+
+  .nav-search-desktop {
+    display: none !important;
+  }
+
+  .nav-search-mobile {
+    display: block !important;
+  }
+
+  .nav-link-desktop {
+    display: flex !important;
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .nav-logo-text {
+    display: none !important;
+  }
+}

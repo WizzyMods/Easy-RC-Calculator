@@ -1,0 +1,17 @@
+{
+  "name": "Easy RC Calculator",
+  "short_name": "RC Calc",
+  "description": "Premium technical toolkit for RC enthusiasts.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
