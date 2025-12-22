@@ -12,10 +12,9 @@ import {
   RotateCcw, Ruler, Timer, FastForward, Lightbulb,
   Target, Radio, Compass, Thermometer, Wind,
   TrendingUp, Scaling, Weight, Waves, Search,
-  Droplet, ShieldCheck, Users
+  Droplet, ShieldCheck
 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
-import { io } from 'socket.io-client';
 
 const CalculatorPage = ({ calculators, unitSystem, setUnitSystem }) => {
   const { id } = useParams();
@@ -36,7 +35,7 @@ const CalculatorPage = ({ calculators, unitSystem, setUnitSystem }) => {
   );
 };
 
-const HomePage = ({ simpleCalculations, advancedCalculations, searchTerm, setSearchTerm, handleNavigate, t, activeUsers }) => {
+const HomePage = ({ simpleCalculations, advancedCalculations, searchTerm, setSearchTerm, handleNavigate, t }) => {
   const filteredSimple = simpleCalculations.filter(c =>
     c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     c.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -57,21 +56,7 @@ const HomePage = ({ simpleCalculations, advancedCalculations, searchTerm, setSea
           {t('app.welcome_subtitle')}
         </p>
 
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.5rem 1rem',
-          background: 'rgba(16, 185, 129, 0.1)',
-          border: '1px solid rgba(16, 185, 129, 0.2)',
-          borderRadius: '20px',
-          color: '#10b981',
-          fontSize: '0.9rem',
-          fontWeight: '500'
-        }}>
-          <Users size={16} />
-          <span>{activeUsers}</span>
-        </div>
+
       </header>
 
       <div className="nav-search-mobile" style={{ marginBottom: '2.5rem', position: 'relative' }}>
@@ -151,7 +136,6 @@ const HomePage = ({ simpleCalculations, advancedCalculations, searchTerm, setSea
 const MainApp = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [unitSystem, setUnitSystem] = useState(() => localStorage.getItem('rc-unit-system') || 'Metric');
-  const [activeUsers, setActiveUsers] = useState(0);
   const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
@@ -159,30 +143,6 @@ const MainApp = () => {
   useEffect(() => {
     localStorage.setItem('rc-unit-system', unitSystem);
   }, [unitSystem]);
-
-  useEffect(() => {
-    // Connect to WebSocket server (via Vite proxy)
-    const socket = io({
-      reconnectionAttempts: 5,
-      timeout: 10000,
-    });
-
-    socket.on('connect', () => {
-      console.log('Connected to WebSocket server');
-    });
-
-    socket.on('connect_error', (err) => {
-      console.error('WebSocket connection error:', err);
-    });
-
-    socket.on('userCount', (count) => {
-      setActiveUsers(count);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   // Reset search when location changes (optional, but good UX)
   useEffect(() => {
@@ -397,7 +357,6 @@ const MainApp = () => {
               setSearchTerm={setSearchTerm}
               handleNavigate={handleNavigate}
               t={t}
-              activeUsers={activeUsers}
             />
           } />
           <Route path="/about" element={<About onBack={() => navigate('/')} />} />

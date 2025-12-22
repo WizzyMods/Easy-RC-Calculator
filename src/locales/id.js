@@ -11,7 +11,7 @@ export default {
     },
     app: {
         welcome_title: 'Selamat datang di',
-        welcome_subtitle: 'Alat 15+ dalam 1 terbaik untuk penggemar RC. Perhitungan presisi untuk performa, efisiensi, dan realisme skala.',
+        welcome_subtitle: 'Alat 20+ dalam 1 terbaik untuk penggemar RC. Perhitungan presisi untuk performa, efisiensi, dan realisme skala.',
         essential_tools: 'Alat Esensial',
         advanced_tools: 'Alat Canggih',
         no_tools_found: 'Tidak ada alat yang cocok dengan "{term}"',

@@ -11,7 +11,7 @@ export default {
     },
     app: {
         welcome_title: 'Willkommen bei',
-        welcome_subtitle: 'Das ultimative 15+ in 1 Werkzeug für RC-Enthusiasten. Präzise Berechnungen für Leistung, Effizienz und realistischen Maßstab.',
+        welcome_subtitle: 'Das ultimative 20+ in 1 Werkzeug für RC-Enthusiasten. Präzise Berechnungen für Leistung, Effizienz und realistischen Maßstab.',
         essential_tools: 'Grundlegende Werkzeuge',
         advanced_tools: 'Erweiterte Werkzeuge',
         no_tools_found: 'Keine Werkzeuge gefunden für "{term}"',

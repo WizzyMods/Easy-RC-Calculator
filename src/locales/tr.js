@@ -11,7 +11,7 @@ export default {
     },
     app: {
         welcome_title: 'Hoş Geldiniz',
-        welcome_subtitle: 'RC meraklıları için 15\'i 1 arada nihai araç seti. Performans, verimlilik ve ölçek gerçekçiliği için hassas hesaplamalar.',
+        welcome_subtitle: 'RC meraklıları için 20+ araç 1 arada nihai set. Performans, verimlilik ve ölçek gerçekçiliği için hassas hesaplamalar.',
         essential_tools: 'Temel Araçlar',
         advanced_tools: 'Gelişmiş Araçlar',
         no_tools_found: '"{term}" ile eşleşen araç bulunamadı',

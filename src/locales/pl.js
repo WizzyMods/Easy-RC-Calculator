@@ -11,7 +11,7 @@ export default {
     },
     app: {
         welcome_title: 'Witaj w',
-        welcome_subtitle: 'Najlepsze narzędzie 15+ w 1 dla entuzjastów RC. Precyzyjne obliczenia dla wydajności, efektywności i realizmu skali.',
+        welcome_subtitle: 'Najlepsze narzędzie 20+ w 1 dla entuzjastów RC. Precyzyjne obliczenia dla wydajności, efektywności i realizmu skali.',
         essential_tools: 'Podstawowe narzędzia',
         advanced_tools: 'Zaawansowane narzędzia',
         no_tools_found: 'Nie znaleziono narzędzi pasujących do "{term}"',

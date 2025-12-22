@@ -11,7 +11,7 @@ export default {
     },
     app: {
         welcome_title: 'Bienvenido a',
-        welcome_subtitle: 'La herramienta definitiva 15+ en 1 para entusiastas del RC. Cálculos de precisión para rendimiento, eficiencia y realismo a escala.',
+        welcome_subtitle: 'La herramienta definitiva 20+ en 1 para entusiastas del RC. Cálculos de precisión para rendimiento, eficiencia y realismo a escala.',
         essential_tools: 'Herramientas Esenciales',
         advanced_tools: 'Herramientas Avanzadas',
         no_tools_found: 'No se encontraron herramientas que coincidan con "{term}"',

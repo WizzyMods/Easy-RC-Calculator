@@ -11,7 +11,7 @@ export default {
     },
     app: {
         welcome_title: 'Välkommen till',
-        welcome_subtitle: 'Det ultimata 15+ i 1-verktyget för RC-entusiaster. Precisionsberäkningar för prestanda, effektivitet och skalrealism.',
+        welcome_subtitle: 'Det ultimata 20+ i 1-verktyget för RC-entusiaster. Precisionsberäkningar för prestanda, effektivitet och skalrealism.',
         essential_tools: 'Grundläggande verktyg',
         advanced_tools: 'Avancerade verktyg',
         no_tools_found: 'Inga verktyg hittades för "{term}"',

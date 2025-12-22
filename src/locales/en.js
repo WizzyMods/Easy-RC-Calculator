@@ -11,7 +11,7 @@ export default {
     },
     app: {
         welcome_title: 'Welcome to',
-        welcome_subtitle: 'The ultimate 15+ in 1 tool for RC enthusiasts. Precision calculations for performance, efficiency, and scale realism.',
+        welcome_subtitle: 'The ultimate 20+ in 1 tool for RC enthusiasts. Precision calculations for performance, efficiency, and scale realism.',
         essential_tools: 'Essential Tools',
         advanced_tools: 'Advanced Tools',
         no_tools_found: 'No tools found matching "{term}"',
