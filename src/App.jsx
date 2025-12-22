@@ -12,9 +12,10 @@ import {
   RotateCcw, Ruler, Timer, FastForward, Lightbulb,
   Target, Radio, Compass, Thermometer, Wind,
   TrendingUp, Scaling, Weight, Waves, Search,
-  Droplet, ShieldCheck
+  Droplet, ShieldCheck, Users
 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
+import { io } from 'socket.io-client';
 
 const CalculatorPage = ({ calculators, unitSystem, setUnitSystem }) => {
   const { id } = useParams();
@@ -35,7 +36,7 @@ const CalculatorPage = ({ calculators, unitSystem, setUnitSystem }) => {
   );
 };
 
-const HomePage = ({ simpleCalculations, advancedCalculations, searchTerm, setSearchTerm, handleNavigate, t }) => {
+const HomePage = ({ simpleCalculations, advancedCalculations, searchTerm, setSearchTerm, handleNavigate, t, activeUsers }) => {
   const filteredSimple = simpleCalculations.filter(c =>
     c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     c.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -52,9 +53,25 @@ const HomePage = ({ simpleCalculations, advancedCalculations, searchTerm, setSea
         <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>
           {t('app.welcome_title')} <span className="gradient-text">Easy RC Calculator</span>
         </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6', marginBottom: '1.5rem' }}>
           {t('app.welcome_subtitle')}
         </p>
+
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 1rem',
+          background: 'rgba(16, 185, 129, 0.1)',
+          border: '1px solid rgba(16, 185, 129, 0.2)',
+          borderRadius: '20px',
+          color: '#10b981',
+          fontSize: '0.9rem',
+          fontWeight: '500'
+        }}>
+          <Users size={16} />
+          <span>{activeUsers}</span>
+        </div>
       </header>
 
       <div className="nav-search-mobile" style={{ marginBottom: '2.5rem', position: 'relative' }}>
@@ -134,6 +151,7 @@ const HomePage = ({ simpleCalculations, advancedCalculations, searchTerm, setSea
 const MainApp = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [unitSystem, setUnitSystem] = useState(() => localStorage.getItem('rc-unit-system') || 'Metric');
+  const [activeUsers, setActiveUsers] = useState(0);
   const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
@@ -141,6 +159,19 @@ const MainApp = () => {
   useEffect(() => {
     localStorage.setItem('rc-unit-system', unitSystem);
   }, [unitSystem]);
+
+  useEffect(() => {
+    // Connect to WebSocket server
+    const socket = io('http://localhost:3001');
+
+    socket.on('userCount', (count) => {
+      setActiveUsers(count);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   // Reset search when location changes (optional, but good UX)
   useEffect(() => {
@@ -355,6 +386,7 @@ const MainApp = () => {
               setSearchTerm={setSearchTerm}
               handleNavigate={handleNavigate}
               t={t}
+              activeUsers={activeUsers}
             />
           } />
           <Route path="/about" element={<About onBack={() => navigate('/')} />} />
