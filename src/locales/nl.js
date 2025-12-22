@@ -65,9 +65,12 @@ export default {
             turning: { title: 'Draaicirkel', description: 'Theoretisch krapste bocht.', tip: 'Kortere wielbases zorgen voor een kleinere draaicirkel. De stuurhoek wordt beperkt door de CVD-koppelingen.' },
             eff: { title: 'Motorefficiëntie', description: 'Verhouding tussen ingaand en uitgaand vermogen.', tip: 'De meeste brushless motoren zijn 80-90% efficiënt. Warmte is de belangrijkste bron van efficiëntieverlies.' },
             thermal: { title: 'ESC Thermische Belasting', description: 'Geschatte warmteproductie.', tip: 'Gegenereerde warmte = Ampère² * Weerstand. ESC\'s met lage weerstand blijven veel koeler.' },
-            drag: { title: 'Aerodynamische Weerstand', description: 'Luchtweerstand bij hoge snelheden.', tip: 'Weerstand neemt toe met het kwadraat van de snelheid. Een verdubbeling van de snelheid vervierdubbelt de weerstand.' },
+            drag: { title: 'Aerodynamische Weerstand', description: 'Luchtweerstand bij hoge snelheden.', tip: 'Weerstand neemt toe met het kwadraat van de snelheid. Een verdubbeling van de snelheid verviervoudigt de weerstand.' },
             transfer: { title: 'Gewichtsoverdracht', description: 'Verschuiving van gewicht tijdens acceleratie.', tip: 'Het verlagen van het zwaartepunt (CG) vermindert gewichtsoverdracht en verbetert de stabiliteit.' },
-            torque: { title: 'Motorkoppel (Torque)', description: 'Berekening van rotatiekracht.', tip: 'Koppel is wat je snel laat optrekken. Een hoger voltage verhoogt de koppelpotentie.' }
+            torque: { title: 'Motorkoppel (Torque)', description: 'Berekening van rotatiekracht.', tip: 'Koppel is wat je snel laat optrekken. Een hoger voltage verhoogt de koppelpotentie.' },
+            oil: { title: 'Schokdemper Olie', description: 'Converteer WT naar CST.', tip: 'WT en CST variëren per merk (approx WT * 13).' },
+            safe_amps: { title: 'Veilige Accustroom', description: 'Max continue ontlading.', tip: 'Overschrijding kan accu beschadigen.' },
+            wheel_rate: { title: 'Wiel Rate', description: 'Effectieve veerstijfheid bij wiel.', tip: 'Wiel rate is belangrijker dan veer rate vanwege hefboomwerking.' }
         },
         inputs: {
             voltage: 'Voltage (V)',
@@ -100,7 +103,11 @@ export default {
             frontal_area: 'Frontaal Oppervlak',
             velocity: 'Snelheid',
             cg_height: 'Zwaartepunt Hoogte',
-            acceleration: 'Versnelling (G)'
+            acceleration: 'Versnelling (G)',
+            shock_wt: 'Schokdemper Olie (WT)',
+            c_rating: 'C-Rating',
+            spring_rate: 'Veer Rate',
+            motion_ratio: 'Bewegingsverhouding (0-1)'
         }
     }
 };

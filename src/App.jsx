@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import CalculatorCard from './components/CalculatorCard';
 import BackgroundSymbols from './components/BackgroundSymbols';
@@ -10,19 +11,141 @@ import {
   Zap, Gauge, History, Settings, Battery, Activity,
   RotateCcw, Ruler, Timer, FastForward, Lightbulb,
   Target, Radio, Compass, Thermometer, Wind,
-  TrendingUp, Scaling, Weight, Waves, Search
+  TrendingUp, Scaling, Weight, Waves, Search,
+  Droplet, ShieldCheck
 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
+const CalculatorPage = ({ calculators, unitSystem, setUnitSystem }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const calcConfig = calculators.find(c => c.id === id);
+
+  if (!calcConfig) {
+    return <div className="text-center p-8">Calculator not found</div>;
+  }
+
+  return (
+    <DynamicCalculator
+      config={calcConfig}
+      onBack={() => navigate('/')}
+      unitSystem={unitSystem}
+      setUnitSystem={setUnitSystem}
+    />
+  );
+};
+
+const HomePage = ({ simpleCalculations, advancedCalculations, searchTerm, setSearchTerm, handleNavigate, t }) => {
+  const filteredSimple = simpleCalculations.filter(c =>
+    c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredAdvanced = advancedCalculations.filter(c =>
+    c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <>
+      <header style={{ marginBottom: '3rem', textAlign: 'center' }}>
+        <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>
+          {t('app.welcome_title')} <span className="gradient-text">Easy RC Calculator</span>
+        </h2>
+        <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
+          {t('app.welcome_subtitle')}
+        </p>
+      </header>
+
+      <div className="nav-search-mobile" style={{ marginBottom: '2.5rem', position: 'relative' }}>
+        <Search size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+        <input
+          type="text"
+          placeholder="Search tools..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '0.8rem 1rem 0.8rem 2.8rem',
+            background: 'var(--glass-bg)',
+            border: '1px solid var(--glass-border)',
+            borderRadius: '16px',
+            color: 'var(--text-main)',
+            fontSize: '1rem',
+            outline: 'none'
+          }}
+        />
+      </div>
+
+      {filteredSimple.length > 0 && (
+        <section style={{ marginBottom: '4rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: '600' }}>{t('app.essential_tools')}</h3>
+            <div style={{ height: '1px', flex: 1, background: 'var(--glass-border)', margin: '0 1.5rem' }}></div>
+          </div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '1.5rem'
+          }}>
+            {filteredSimple.map((calc) => (
+              <CalculatorCard
+                key={calc.id}
+                {...calc}
+                onClick={() => handleNavigate(calc.id)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {filteredAdvanced.length > 0 && (
+        <section>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: '600' }}>{t('app.advanced_tools')}</h3>
+            <div style={{ height: '1px', flex: 1, background: 'var(--glass-border)', margin: '0 1.5rem' }}></div>
+          </div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '1.5rem'
+          }}>
+            {filteredAdvanced.map((calc) => (
+              <CalculatorCard
+                key={calc.id}
+                {...calc}
+                onClick={() => handleNavigate(calc.id)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {filteredSimple.length === 0 && filteredAdvanced.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>
+          <Search size={48} style={{ marginBottom: '1.5rem', opacity: 0.5 }} />
+          <p style={{ fontSize: '1.2rem' }}>{t('app.no_tools_found').replace('{term}', searchTerm)}</p>
+        </div>
+      )}
+    </>
+  );
+};
+
 const MainApp = () => {
-  const [view, setView] = useState('menu');
   const [searchTerm, setSearchTerm] = useState('');
   const [unitSystem, setUnitSystem] = useState(() => localStorage.getItem('rc-unit-system') || 'Metric');
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     localStorage.setItem('rc-unit-system', unitSystem);
   }, [unitSystem]);
+
+  // Reset search when location changes (optional, but good UX)
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location.pathname]);
 
   const simpleCalculations = [
     {
@@ -42,6 +165,12 @@ const MainApp = () => {
       tip: t('calculator.tools.gear.tip'),
       inputs: [{ id: 's', label: t('calculator.inputs.spur_gear'), placeholder: '54' }, { id: 'p', label: t('calculator.inputs.pinion_gear'), placeholder: '18' }],
       calculate: formulas.calculateGearRatio, units: { metric: ': 1', imperial: ': 1' }
+    },
+    {
+      id: 'safe_amps', title: t('calculator.tools.safe_amps.title'), description: t('calculator.tools.safe_amps.description'), icon: ShieldCheck, color: '#ef4444', category: t('calculator.categories.battery'),
+      tip: t('calculator.tools.safe_amps.tip'),
+      inputs: [{ id: 'cap', label: t('calculator.inputs.capacity'), placeholder: '5000' }, { id: 'c', label: t('calculator.inputs.c_rating'), placeholder: '50' }],
+      calculate: formulas.calculateSafeAmps, units: { metric: 'Amps', imperial: 'Amps' }
     },
     {
       id: 'fdr', title: t('calculator.tools.fdr.title'), description: t('calculator.tools.fdr.description'), icon: RotateCcw, color: '#06b6d4', category: t('calculator.categories.transmission'),
@@ -95,6 +224,12 @@ const MainApp = () => {
       inputs: [{ id: 'rpm', label: t('calculator.inputs.measured_rpm'), placeholder: '38000' }, { id: 'v', label: t('calculator.inputs.voltage'), placeholder: '11.1' }],
       calculate: formulas.calculateMotorKV, units: { metric: 'KV', imperial: 'KV' }
     },
+    {
+      id: 'oil', title: t('calculator.tools.oil.title'), description: t('calculator.tools.oil.description'), icon: Droplet, color: '#0ea5e9', category: t('calculator.categories.chassis'),
+      tip: t('calculator.tools.oil.tip'),
+      inputs: [{ id: 'wt', label: t('calculator.inputs.shock_wt'), placeholder: '30' }],
+      calculate: formulas.calculateShockOil, units: { metric: 'CST', imperial: 'CST' }
+    },
   ];
 
   const advancedCalculations = [
@@ -131,6 +266,12 @@ const MainApp = () => {
         { id: 'rr', label: t('calculator.inputs.rear_right'), placeholder: '350', metric: 'g', imperial: 'oz' }
       ],
       calculate: formulas.calculateCornerWeightBalance, units: { metric: '% Cross', imperial: '% Cross' }
+    },
+    {
+      id: 'wheel_rate', title: t('calculator.tools.wheel_rate.title'), description: t('calculator.tools.wheel_rate.description'), icon: Activity, color: '#8b5cf6', category: t('calculator.categories.chassis'),
+      tip: t('calculator.tools.wheel_rate.tip'),
+      inputs: [{ id: 'k', label: t('calculator.inputs.spring_rate'), placeholder: '5.0' }, { id: 'mr', label: t('calculator.inputs.motion_ratio'), placeholder: '0.7' }],
+      calculate: formulas.calculateWheelRate, units: { metric: 'Rate', imperial: 'Rate' }
     },
     {
       id: 'turning', title: t('calculator.tools.turning.title'), description: t('calculator.tools.turning.description'), icon: Compass, color: '#6366f1', category: t('calculator.categories.physics'),
@@ -179,142 +320,52 @@ const MainApp = () => {
     },
   ];
 
-  const handleNavigate = (newView) => {
-    setView(newView);
-    setSearchTerm(''); // Clear search on navigation
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleNavigate = (path) => {
+    if (path === 'menu') {
+      navigate('/');
+    } else if (path === 'about') {
+      navigate('/about');
+    } else {
+      navigate(`/calculators/${path}`);
+    }
+    setSearchTerm('');
   };
 
-  const filteredSimple = simpleCalculations.filter(c =>
-    c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const filteredAdvanced = advancedCalculations.filter(c =>
-    c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const renderView = () => {
-    if (view === 'menu') {
-      return (
-        <>
-          <header style={{ marginBottom: '3rem', textAlign: 'center' }}>
-            <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>
-              {t('app.welcome_title')} <span className="gradient-text">Easy RC Calculator</span>
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
-              {t('app.welcome_subtitle')}
-            </p>
-          </header>
-
-          <div className="nav-search-mobile" style={{ marginBottom: '2.5rem', position: 'relative' }}>
-            <Search size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
-            <input
-              type="text"
-              placeholder="Search tools..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.8rem 1rem 0.8rem 2.8rem',
-                background: 'var(--glass-bg)',
-                border: '1px solid var(--glass-border)',
-                borderRadius: '16px',
-                color: 'var(--text-main)',
-                fontSize: '1rem',
-                outline: 'none'
-              }}
-            />
-          </div>
-
-          {filteredSimple.length > 0 && (
-            <section style={{ marginBottom: '4rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '600' }}>{t('app.essential_tools')}</h3>
-                <div style={{ height: '1px', flex: 1, background: 'var(--glass-border)', margin: '0 1.5rem' }}></div>
-              </div>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                gap: '1.5rem'
-              }}>
-                {filteredSimple.map((calc) => (
-                  <CalculatorCard
-                    key={calc.id}
-                    {...calc}
-                    onClick={() => handleNavigate(calc.id)}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {filteredAdvanced.length > 0 && (
-            <section>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '600' }}>{t('app.advanced_tools')}</h3>
-                <div style={{ height: '1px', flex: 1, background: 'var(--glass-border)', margin: '0 1.5rem' }}></div>
-              </div>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                gap: '1.5rem'
-              }}>
-                {filteredAdvanced.map((calc) => (
-                  <CalculatorCard
-                    key={calc.id}
-                    {...calc}
-                    onClick={() => handleNavigate(calc.id)}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {filteredSimple.length === 0 && filteredAdvanced.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>
-              <Search size={48} style={{ marginBottom: '1.5rem', opacity: 0.5 }} />
-              <p style={{ fontSize: '1.2rem' }}>{t('app.no_tools_found').replace('{term}', searchTerm)}</p>
-            </div>
-          )}
-        </>
-      );
-    }
-
-    if (view === 'about') {
-      return <About onBack={() => handleNavigate('menu')} />;
-    }
-
-    const calcConfig = [...simpleCalculations, ...advancedCalculations].find(c => c.id === view);
-    if (calcConfig) {
-      return (
-        <DynamicCalculator
-          config={calcConfig}
-          onBack={() => handleNavigate('menu')}
-          unitSystem={unitSystem}
-          setUnitSystem={setUnitSystem}
-        />
-      );
-    }
-
-    return null;
-  };
+  const activeView = location.pathname === '/' ? 'menu' : location.pathname === '/about' ? 'about' : 'calculator';
 
   return (
     <div className="app-container">
       <div className="theme-blur-overlay" />
       <BackgroundSymbols />
       <Navbar
-        onHome={() => handleNavigate('menu')}
-        onAbout={() => handleNavigate('about')}
-        activeView={view}
+        onHome={() => navigate('/')}
+        onAbout={() => navigate('/about')}
+        activeView={activeView}
         onSearch={setSearchTerm}
         searchValue={searchTerm}
       />
 
       <main className="container" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
-        {renderView()}
+        <Routes>
+          <Route path="/" element={
+            <HomePage
+              simpleCalculations={simpleCalculations}
+              advancedCalculations={advancedCalculations}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              handleNavigate={handleNavigate}
+              t={t}
+            />
+          } />
+          <Route path="/about" element={<About onBack={() => navigate('/')} />} />
+          <Route path="/calculators/:id" element={
+            <CalculatorPage
+              calculators={[...simpleCalculations, ...advancedCalculations]}
+              unitSystem={unitSystem}
+              setUnitSystem={setUnitSystem}
+            />
+          } />
+        </Routes>
       </main>
 
       <footer style={{ borderTop: '1px solid var(--glass-border)', padding: '2rem 0', marginTop: '4rem' }}>
@@ -328,7 +379,9 @@ const MainApp = () => {
 
 const App = () => (
   <LanguageProvider>
-    <MainApp />
+    <BrowserRouter>
+      <MainApp />
+    </BrowserRouter>
   </LanguageProvider>
 );
 

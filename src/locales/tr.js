@@ -67,7 +67,10 @@ export default {
             thermal: { title: 'ESC Termal Yükü', description: 'Tahmini ısı üretimi.', tip: 'Üretilen ısı = Amper² * Direnç. Düşük dirençli ESC\'ler çok daha serin çalışır.' },
             drag: { title: 'Aerodinamik Sürükleme Kuvveti', description: 'Yüksek hızlarda hava direnci.', tip: 'Sürükleme, hızın karesiyle artar. Hızı iki katına çıkarmak, sürükleme kuvvetini dört katına çıkarır.' },
             transfer: { title: 'Ağırlık Transferi', description: 'Hızlanma sırasında ağırlık kayması.', tip: 'Ağırlık merkezini (CG) alçaltmak ağırlık transferini azaltır ve dengeyi artırır.' },
-            torque: { title: 'Motor Torku', description: 'Dönüş kuvveti hesaplaması.', tip: 'Tork, kalkış anındaki gücünüzdür. Daha yüksek voltaj tork potansiyelini artırır.' }
+            torque: { title: 'Motor Torku', description: 'Dönüş kuvveti hesaplaması.', tip: 'Tork, kalkış anındaki gücünüzdür. Daha yüksek voltaj tork potansiyelini artırır.' },
+            oil: { title: 'Amortisör Yağı Dönüştürücü', description: 'WT değerini CST\'ye çevir.', tip: 'WT ve CST markaya göre değişebilir, ancak bu iyi bir yaklaşımdır (WT * 13).' },
+            safe_amps: { title: 'Güvenli Batarya Akımı', description: 'Maksimum sürekli deşarj limiti.', tip: 'Bu akım limitini aşmak bataryanın şişmesine veya yanmasına neden olabilir.' },
+            wheel_rate: { title: 'Tekerlek Oranı (Wheel Rate)', description: 'Tekerlekteki etkili yay sertliği.', tip: 'Tekerlek oranı, yay oranından daha önemlidir çünkü kaldıraç etkisini hesaba katar.' }
         },
         inputs: {
             voltage: 'Voltaj (V)',
@@ -100,7 +103,11 @@ export default {
             frontal_area: 'Ön Alan',
             velocity: 'Hız',
             cg_height: 'CG Yüksekliği',
-            acceleration: 'İvme (G)'
+            acceleration: 'İvme (G)',
+            shock_wt: 'Amortisör Yağı (WT)',
+            c_rating: 'C-Değeri (C-Rating)',
+            spring_rate: 'Yay Oranı',
+            motion_ratio: 'Hareket Oranı (0-1)'
         }
     }
 };

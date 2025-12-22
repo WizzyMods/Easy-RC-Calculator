@@ -67,7 +67,10 @@ export default {
             thermal: { title: 'ESC Thermal Load', description: 'Estimated heat generation.', tip: 'Heat generated = Amps² * Resistance. Low resistance ESCs run much cooler.' },
             drag: { title: 'Aerodynamic Drag Force', description: 'Wind resistance at high speeds.', tip: 'Drag increases with the square of speed. Doubling speed quadruple the drag force.' },
             transfer: { title: 'Weight Transfer', description: 'Weight shift during acceleration.', tip: 'Lowering the CG (Center of Gravity) height reduces weight transfer and improves stability.' },
-            torque: { title: 'Motor Torque', description: 'Rotational force calculation.', tip: 'Torque is what gets you off the line. Higher voltage increases torque potential.' }
+            torque: { title: 'Motor Torque', description: 'Rotational force calculation.', tip: 'Torque is what gets you off the line. Higher voltage increases torque potential.' },
+            oil: { title: 'Shock Oil Converter', description: 'Convert WT to CST.', tip: 'WT and CST often vary by brand, but this gives a good approximation (WT * 13).' },
+            safe_amps: { title: 'Battery Safe Amps', description: 'Max continuous discharge limit.', tip: 'Exceeding this amp limit can cause the battery to puff or catch fire.' },
+            wheel_rate: { title: 'Wheel Rate', description: 'Effective spring stiffness at the wheel.', tip: 'Wheel rate matters more than spring rate because it accounts for leverage.' }
         },
         inputs: {
             voltage: 'Voltage (V)',
@@ -100,7 +103,11 @@ export default {
             frontal_area: 'Frontal Area',
             velocity: 'Velocity',
             cg_height: 'CG Height',
-            acceleration: 'Acceleration (G)'
+            acceleration: 'Acceleration (G)',
+            shock_wt: 'Shock Oil (WT)',
+            c_rating: 'C-Rating',
+            spring_rate: 'Spring Rate',
+            motion_ratio: 'Motion Ratio (0-1)'
         }
     }
 };

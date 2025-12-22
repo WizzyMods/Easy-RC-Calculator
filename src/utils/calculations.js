@@ -135,6 +135,19 @@ export const calculateTorque = (power, rpm) => {
     return (parseFloat(power) * 9.5488 / parseFloat(rpm)).toFixed(2);
 };
 
+export const calculateShockOil = (wt) => {
+    // Approximate conversion
+    return (parseFloat(wt) * 13).toFixed(0);
+};
+
+export const calculateSafeAmps = (capacity, cRating) => {
+    return ((parseFloat(capacity) / 1000) * parseFloat(cRating)).toFixed(2);
+};
+
+export const calculateWheelRate = (springRate, motionRatio) => {
+    return (parseFloat(springRate) * Math.pow(parseFloat(motionRatio), 2)).toFixed(2);
+};
+
 // --- Complex Calculations (Returning Objects) ---
 
 export const calculateFDRComplex = (spur, pinion, internalRatio, tireDiameter) => {

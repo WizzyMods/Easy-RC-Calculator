@@ -67,7 +67,10 @@ export default {
             thermal: { title: 'ESC-Wärmelast', description: 'Geschätzte Wärmeentwicklung.', tip: 'Wärme = Ampere² × Widerstand. Niedriger Widerstand = kühlere ESCs.' },
             drag: { title: 'Aerodynamischer Widerstand', description: 'Luftwiderstand bei hoher Geschwindigkeit.', tip: 'Widerstand steigt quadratisch mit Geschwindigkeit.' },
             transfer: { title: 'Gewichtsverlagerung', description: 'Verlagerung bei Beschleunigung.', tip: 'Niedriger Schwerpunkt reduziert Verlagerung und erhöht Stabilität.' },
-            torque: { title: 'Motordrehmoment', description: 'Berechne Drehkraft.', tip: 'Drehmoment bringt dich vom Start weg. Höhere Spannung erhöht Potenzial.' }
+            torque: { title: 'Motordrehmoment', description: 'Berechne Drehkraft.', tip: 'Drehmoment bringt dich vom Start weg. Höhere Spannung erhöht Potenzial.' },
+            oil: { title: 'Stoßdämpferöl-Konverter', description: 'Rechne WT in CST um.', tip: 'WT und CST variieren je nach Marke approx. (WT * 13).' },
+            safe_amps: { title: 'Sichere Batteriestromstärke', description: 'Max. dauerhafte Entladegrenze.', tip: 'Das Überschreiten kann zum Aufblähen oder Brand führen.' },
+            wheel_rate: { title: 'Radrate', description: 'Effektive Federhärte am Rad.', tip: 'Die Radrate ist wichtiger als die Federrate, da sie die Hebelwirkung berücksichtigt.' }
         },
         inputs: {
             voltage: 'Spannung (V)',
@@ -100,7 +103,11 @@ export default {
             frontal_area: 'Frontfläche',
             velocity: 'Geschwindigkeit',
             cg_height: 'Schwerpunkthöhe',
-            acceleration: 'Beschleunigung (G)'
+            acceleration: 'Beschleunigung (G)',
+            shock_wt: 'Stoßdämpferöl (WT)',
+            c_rating: 'C-Rate',
+            spring_rate: 'Federrate',
+            motion_ratio: 'Bewegungsverhältnis (0-1)'
         }
     }
 };
