@@ -1,12 +1,12 @@
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const cors = require('cors');
+import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import cors from 'cors';
 
 const app = express();
 app.use(cors());
 
-const server = http.createServer(app);
+const server = createServer(app);
 const io = new Server(server, {
     cors: {
         origin: "*", // Allow all for simplicity in this demo, restrict in prod
@@ -35,6 +35,6 @@ setInterval(() => {
 }, 5000);
 
 const PORT = 3001;
-server.listen(PORT, () => {
-    console.log(`WebSocket server running on port ${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`WebSocket server running on port ${PORT} (0.0.0.0)`);
 });

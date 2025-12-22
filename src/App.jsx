@@ -161,8 +161,19 @@ const MainApp = () => {
   }, [unitSystem]);
 
   useEffect(() => {
-    // Connect to WebSocket server
-    const socket = io('http://localhost:3001');
+    // Connect to WebSocket server (via Vite proxy)
+    const socket = io({
+      reconnectionAttempts: 5,
+      timeout: 10000,
+    });
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
+
+    socket.on('connect_error', (err) => {
+      console.error('WebSocket connection error:', err);
+    });
 
     socket.on('userCount', (count) => {
       setActiveUsers(count);
@@ -409,11 +420,15 @@ const MainApp = () => {
   );
 }
 
+import ErrorBoundary from './components/ErrorBoundary';
+
 const App = () => (
   <LanguageProvider>
-    <BrowserRouter>
-      <MainApp />
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <MainApp />
+      </BrowserRouter>
+    </ErrorBoundary>
   </LanguageProvider>
 );
 

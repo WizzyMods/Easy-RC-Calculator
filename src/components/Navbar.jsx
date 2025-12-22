@@ -16,8 +16,15 @@ const Navbar = ({ onHome, onAbout, activeView, onSearch, searchValue }) => {
   const [showThemes, setShowThemes] = useState(false);
   const [showLanguages, setShowLanguages] = useState(false);
   const { language, t } = useLanguage();
-  const [currentTheme, setCurrentTheme] = useState(() => localStorage.getItem('rc-theme') || 'default');
-  const [currentMode, setCurrentMode] = useState(() => localStorage.getItem('rc-mode') || 'dark');
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    const saved = localStorage.getItem('rc-theme');
+    const validThemes = themes.map(t => t.id);
+    return validThemes.includes(saved) ? saved : 'default';
+  });
+  const [currentMode, setCurrentMode] = useState(() => {
+    const saved = localStorage.getItem('rc-mode');
+    return ['light', 'dark'].includes(saved) ? saved : 'dark';
+  });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', currentTheme);
