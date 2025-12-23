@@ -14,3 +14,15 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Ensure proper Content-Type headers for XML files
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"
+    X-Robots-Tag = "noindex"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
